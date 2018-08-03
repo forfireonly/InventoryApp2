@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Layout for a single list item in the list of pets -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/activity_margin">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product_name"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_18sp" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="@dimen/_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product_price"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_18sp" />
+
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price_small"
+            android:textSize="@dimen/_16sp" />
+
+        <TextView
+            android:id="@+id/more_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/press_for_more_details"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/_24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/quantity"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_18sp" />
+
+        <TextView
+            android:id="@+id/item_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/quantity_small"
+            android:textSize="@dimen/_16sp" />
+
+        <Button
+            android:id="@+id/sell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:focusable="false"
+            android:onClick="sell"
+            android:text="@string/sell"
+            android:textColor="@color/colorAccent" />
+        />
+
+    </LinearLayout>
+
+</LinearLayout>
