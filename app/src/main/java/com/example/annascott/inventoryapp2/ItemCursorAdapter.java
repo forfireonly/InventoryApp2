@@ -17,7 +17,6 @@ public class ItemCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        // TODO: Fill out this method and return the list item view (instead of null)
         return LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
     }
 

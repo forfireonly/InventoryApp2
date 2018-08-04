@@ -11,6 +11,7 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
@@ -99,15 +100,31 @@ public class EditorActivity extends AppCompatActivity implements
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
                 String phoneNumber = "tel:"+mPhoneNumbertEditText.getText().toString();
-                callIntent.setData(Uri.parse(phoneNumber));
+                try
+                {
+                    if(Build.VERSION.SDK_INT > 22)
+                    {
+                        if (ActivityCompat.checkSelfPermission(EditorActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(EditorActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 101);
+                            return;
+                        }
 
-                if (ActivityCompat.checkSelfPermission(EditorActivity.this,
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse(phoneNumber));
+                        startActivity(callIntent);
+
+                    }
+                    else {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse(phoneNumber));
+                        startActivity(callIntent);
+                    }
                 }
-                startActivity(callIntent);
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -160,17 +177,34 @@ public class EditorActivity extends AppCompatActivity implements
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
+
+
         String priceString = mPriceEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
-        //int quantity = Integer.parseInt(quantityString);
         String supplierString = mSupplierEditText.getText().toString().trim();
         String phoneString = mPhoneNumbertEditText.getText().toString().trim();
 
         if (mCurrentItemUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString)&&
-                  TextUtils.isEmpty(supplierString) && TextUtils.isEmpty(phoneString)) {
+                TextUtils.isEmpty(nameString) || TextUtils.isEmpty(priceString)||
+                  TextUtils.isEmpty(supplierString) || TextUtils.isEmpty(phoneString)) {
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            Toast.makeText(this, "Iem was not saved, Item MUST have name, price, supplier, and phone number!",
+                    Toast.LENGTH_SHORT).show();
+            if (TextUtils.isEmpty(nameString)) {
+                Toast.makeText(this, "Please, enter item's name",
+                        Toast.LENGTH_SHORT).show();}
+                        if (TextUtils.isEmpty(priceString)) {
+                    Toast.makeText(this, "Please, enter price",
+                            Toast.LENGTH_SHORT).show();}
+                if (TextUtils.isEmpty(supplierString)) {
+                    Toast.makeText(this, "Please, enter supplier",
+                            Toast.LENGTH_SHORT).show();}
+                    if (TextUtils.isEmpty(phoneString)) {
+                        Toast.makeText(this, "Please,enter supplier's phone number",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
             return;
         }
 
@@ -181,6 +215,10 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY, quantity);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_SUPPLIER, supplierString);
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE_NUMBER, phoneString);
+
+        if (quantity == 0) {
+            Toast.makeText(this, "Quantity of item is zero, would you like to change that?",
+                    Toast.LENGTH_SHORT).show();}
 
         if (mCurrentItemUri == null) {
             // This is a NEW pet, so insert a new pet into the provider,
